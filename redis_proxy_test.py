@@ -2,6 +2,7 @@ import unittest
 from flask import Flask, jsonify
 import redis
 from cachetools import LRUCache
+import time
 
 from redis_proxy import app
 
@@ -38,8 +39,9 @@ class RedisProxyTest(unittest.TestCase):
         expected_data = {'key': 'key1', 'value': 'value1'}
         self.assertEqual(response.get_json(), expected_data)
 
-    def test_cache_eviction(self): #tests LRU capability
+    def test_cache_eviction(self): #tests LRU capability & fixed key size
         #for this test, make sure cache size has been configured to max_size = 2 in redis_proxy.py
+        #question - should these values also be in the database? 
         self.app.get('/set/key1/value1')
         self.app.get('/set/key2/value2')
         self.app.get('set/key3/value3')
@@ -49,8 +51,19 @@ class RedisProxyTest(unittest.TestCase):
         response = self.app.get('/get/key3')
         expected_data_key3 = {'key': 'key3', 'value': 'value3'}
         self.assertEqual(response.get_json(), expected_data_key3)
+    
+    def global_expiry(self):
+        self.app.get('/set/key4/value4')
+        time.sleep(3)
+        response = self.app.get('/get/key4')
+        self.assertEqual(response.status_code, 404)
+        expected_data = {'message': 'Key not found'}
+        self.assertEqual(response.get_json(), expected_data)
+
+
         
         
+
 
 if __name__ == '__main__':
     unittest.main()
