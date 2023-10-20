@@ -38,7 +38,7 @@ class RedisProxyTest(unittest.TestCase):
         expected_data = {'key': 'key1', 'value': 'value1'}
         self.assertEqual(response.get_json(), expected_data)
 
-    def test_cache_eviction(self):
+    def test_cache_eviction(self): #tests LRU capability
         #for this test, make sure cache size has been configured to max_size = 2 in redis_proxy.py
         self.app.get('/set/key1/value1')
         self.app.get('/set/key2/value2')
@@ -49,7 +49,7 @@ class RedisProxyTest(unittest.TestCase):
         response = self.app.get('/get/key3')
         expected_data_key3 = {'key': 'key3', 'value': 'value3'}
         self.assertEqual(response.get_json(), expected_data_key3)
-        print(len(self.cache))
+        
         
 
 if __name__ == '__main__':
