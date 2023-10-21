@@ -52,7 +52,7 @@ class RedisProxyTest(unittest.TestCase):
         expected_data_key3 = {'key': 'key3', 'value': 'value3'}
         self.assertEqual(response.get_json(), expected_data_key3)
     
-    def global_expiry(self):
+    def test_global_expiry(self):
         self.app.get('/set/key4/value4')
         time.sleep(3)
         response = self.app.get('/get/key4')
@@ -61,7 +61,6 @@ class RedisProxyTest(unittest.TestCase):
         self.assertEqual(response.get_json(), expected_data)
 
 
-        
         
 
 
