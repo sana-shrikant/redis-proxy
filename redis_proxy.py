@@ -54,3 +54,5 @@ def get_data_route(key):
 
 if __name__ == '__main__':
     app.run(host=DEFAULT_HOST, port=DEFAULT_PORT)
+
+
