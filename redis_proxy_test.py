@@ -3,6 +3,7 @@ from flask import Flask, jsonify
 import redis
 from cachetools import LRUCache
 import time
+import threading
 
 from redis_proxy import app
 
@@ -13,6 +14,7 @@ class RedisProxyTest(unittest.TestCase):
         self.redis_client = redis.StrictRedis(host='localhost', port=6379, db=0) #TODO: clarify bc im not 100% sure if needed
         #test client for the flask app
         self.app = app.test_client()
+        self.concurrent_requests = 5
 
     def test_get_data(self):
         #set some test data
@@ -60,6 +62,21 @@ class RedisProxyTest(unittest.TestCase):
         expected_data = {'message': 'Key not found'}
         self.assertEqual(response.get_json(), expected_data)
 
+    def test_sequential_concurrent_processing(self): #TODO -understand how this test case works 
+        request_order = []
+        def send_concurrent_requests():
+            for i in range(self.concurrent_requests):
+                response = self.app.get('/get/key')
+                response_data = response.get_json()
+                request_order.append(response_data['key'])
+            threads = [threading.Thread(target=send_concurrent_requests) for _ in range(self.concurrent_requests)]
+            for thread in threads:
+                thread.start()
+            for thread in threads:
+                thread.join()
+
+            expected_order = [str(i) for i in range(self.concurrent_requests)]
+            self.assertEqual(request_order, expected_order)
 
         
 
