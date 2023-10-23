@@ -77,9 +77,7 @@ class RedisProxyTest(unittest.TestCase):
 
             expected_order = [str(i) for i in range(self.concurrent_requests)]
             self.assertEqual(request_order, expected_order)
-
         
-
 
 if __name__ == '__main__':
     unittest.main()

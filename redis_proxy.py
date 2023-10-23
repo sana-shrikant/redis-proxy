@@ -51,6 +51,9 @@ def get_data(key):
 def get_data_route(key):
     response = get_data(key)
     return response
+@app.route('/', methods=['GET'])
+def index():
+    return "Welcome to the Redis proxy!"
 
 if __name__ == '__main__':
     app.run(host=DEFAULT_HOST, port=DEFAULT_PORT)
