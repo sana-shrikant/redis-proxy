@@ -22,12 +22,6 @@ class EndToEndTest(unittest.TestCase):
         expected_data = {'message': 'Key not found'}
         self.assertEqual(response.json(), expected_data)
     
-    # def test_key_expiry(self):
-    #     redis_url = "http://localhost:6379"
-    #     redis_client = redis.StrictRedis.from_url(redis_url)
-    #     redis_client.setex('test_key', 1, 'test_value')
-
-    
 
 if __name__ == '__main__':
     unittest.main()
