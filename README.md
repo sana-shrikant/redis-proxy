@@ -46,9 +46,10 @@ Instructions for how to run the proxy & tests:
     in a new window - python3 test_e2e.py    // python -m unittest test_e2e
 
 Process Approach: 
-First, I spent a couple of hours reading the specification & installing & importing the necessary libraries to begin implementing a solution. Then, I took another hour to familiarize myself with the concepts of routes, endpoints, & how Flask could work with the cache & database. After this, I spent an hour or so to look into the cachetools library - since it's a Python module, it made sense to use this library. Next, I used an LRU cache, and then reimplemented the cache using a TTL cache to satisfy the global expiry requirement, because the TTL cache is built upon the LRU cache. For the total project, I spent between 8-10 hours to complete it - including research, implementation, debugging, & testing.
+    First, I spent a couple of hours reading the specification & installing & importing the necessary libraries to begin implementing a solution. Then, I took another hour to familiarize myself with the concepts of routes, endpoints, & how Flask could work with the cache & database. After this, I spent an hour or so to look into the cachetools library - since it's a Python module, it made sense to use this library. Next, I used an LRU cache, and then reimplemented the cache using a TTL cache to satisfy the global expiry requirement, because the TTL cache is built upon the LRU cache. For the total project, I spent between 8-10 hours to complete it - including research, implementation, debugging, & testing.
 
-A list of reqs I didn't implement / why : I wasn't able to finish implementing the bonus requirements due to a lack of time. However, I did spend some time looking into the paralle concurrent processing one - for this, I would implement it using the concurrent.futures module from Python. I would modify my route handler for the get_data function to control access to concurrent processing using semaphores, & configure a maximum number of concurrent clients. 
+A list of reqs I didn't implement / why : 
+    I wasn't able to finish implementing the bonus requirements due to a lack of time. However, I did spend some time looking into the paralle concurrent processing one - for this, I would implement it using the concurrent.futures module from Python. I would modify my route handler for the get_data function to control access to concurrent processing using semaphores, & configure a maximum number of concurrent clients. 
 
 Here are some sources I found helpful when implementing this project:
 
