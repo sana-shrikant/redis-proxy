@@ -29,6 +29,7 @@ cache = TTLCache(maxsize = cache_max_size, ttl = global_expiry_seconds)
 def set_data(key, value):
     cache[key] = value
     return ('', 204)
+
 @cached(cache=cache, lock = cache_lock)
 def get_data(key):
     #check the cache first
@@ -40,17 +41,16 @@ def get_data(key):
     #val not in cache - look in redis db 
     value = redis_client.get(key)
     if value:
-        #if len(cache) >= cache.maxsize:
-            #remove LRU item to make room for new one 
-        #    cache.popitem()
         cache[key] = value.decode('utf-8')
         return jsonify({'key': key, 'value': value.decode('utf-8')})
     else:
         return jsonify({'message': 'Key not found'}), 404
+
 @app.route('/get/<key>', methods= ['GET'])
 def get_data_route(key):
     response = get_data(key)
     return response
+
 @app.route('/', methods=['GET'])
 def index():
     return "Welcome to the Redis proxy!"
